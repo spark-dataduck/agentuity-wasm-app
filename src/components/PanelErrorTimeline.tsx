@@ -82,8 +82,8 @@ export function PanelErrorTimeline() {
                 fontSize: 11,
                 fontFamily: 'JetBrains Mono',
               }}
-              labelFormatter={(v: string) => formatTimeTooltip(v, timeRange)}
-              formatter={(value: number, name: string) => [`${value}%`, name]}
+              labelFormatter={(v: any) => formatTimeTooltip(String(v), timeRange)}
+              formatter={(value: any, name: any) => [`${value}%`, name]}
             />
             <Legend
               iconSize={8}

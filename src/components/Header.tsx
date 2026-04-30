@@ -29,10 +29,6 @@ export function Header() {
     }
   };
 
-  // Compute reasonable default dates from dataset
-  const datasetRef = getDatasetNow();
-  const isTimestamp = datasetRef.includes('::TIMESTAMP');
-
   return (
     <header className="flex items-center justify-between px-4 py-2.5 border-b border-line bg-bg-1 shrink-0">
       {/* Left: brand + tenant */}

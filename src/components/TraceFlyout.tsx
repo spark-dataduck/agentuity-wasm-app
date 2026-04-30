@@ -161,7 +161,7 @@ export function TraceFlyout() {
 }
 
 function getDepth(
-  spanId: string,
+  _spanId: string,
   parentId: string | null,
   spans: SpanRow[],
 ): number {

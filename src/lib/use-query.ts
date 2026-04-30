@@ -47,9 +47,10 @@ export function useQuery<T = Record<string, unknown>>(
 
   // Re-fetch when cache state changes
   useEffect(() => {
-    return onCacheStateChange(() => {
+    const unsub = onCacheStateChange(() => {
       setCacheVersion((v) => v + 1);
     });
+    return () => { unsub(); };
   }, []);
 
   const fetch = useCallback(async () => {

@@ -17,9 +17,10 @@ export function DBProvider({ children, timeRange, customRange }: { children: Rea
 
   // Listen for cache state changes
   useEffect(() => {
-    return onCacheStateChange((cacheState, cachedTimeRange) => {
+    const unsub = onCacheStateChange((cacheState, cachedTimeRange) => {
       setState((prev) => ({ ...prev, cacheState, cachedTimeRange }));
     });
+    return () => { unsub(); };
   }, []);
 
   // Initialize DB connection

@@ -27,7 +27,7 @@ export function PanelVolume() {
   const [mode, setMode] = useState<BrushMode>('idle');
   const [selStart, setSelStart] = useState<string | null>(null);
   const [selEnd, setSelEnd] = useState<string | null>(null);
-  const [hoveringBrush, setHoveringBrush] = useState(false);
+  const [_hoveringBrush, setHoveringBrush] = useState(false);
   // For drag mode: the offset from where user clicked to brush start
   const dragRef = useRef<{ startIdx: number; brushStartIdx: number; brushEndIdx: number } | null>(null);
 
@@ -106,7 +106,6 @@ export function PanelVolume() {
       } else if (mode === 'dragging' && dragRef.current) {
         const delta = idx - dragRef.current.startIdx;
         const newStartIdx = dragRef.current.brushStartIdx + delta;
-        const newEndIdx = dragRef.current.brushEndIdx + delta;
         const width = dragRef.current.brushEndIdx - dragRef.current.brushStartIdx;
 
         // Clamp to chart bounds
@@ -217,7 +216,7 @@ export function PanelVolume() {
                 fontSize: 11,
                 fontFamily: 'JetBrains Mono',
               }}
-              labelFormatter={(v: string) => formatTimeTooltip(v, timeRange)}
+              labelFormatter={(v: any) => formatTimeTooltip(String(v), timeRange)}
               active={mode === 'idle'}
             />
             <Area

@@ -14,11 +14,12 @@ import { TraceFlyout } from './components/TraceFlyout';
 import { onCacheStateChange, onQueryReady } from './lib/db';
 
 function Dashboard() {
-  const { cacheState, cachedTimeRange } = useDB();
+  const { cacheState } = useDB();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    return onQueryReady((r) => setReady(r));
+    const unsub = onQueryReady((r) => setReady(r));
+    return () => { unsub(); };
   }, []);
 
   return (
@@ -92,13 +93,14 @@ export default function App() {
 
   // Auto-switch to local mode when cache becomes ready
   useEffect(() => {
-    return onCacheStateChange((state, range) => {
+    const unsub = onCacheStateChange((state, range) => {
       setCacheState(state);
       setCachedTimeRange(range);
       if (state === 'cached') {
         setExecMode('local');
       }
     });
+    return () => { unsub(); };
   }, []);
 
   // When time range changes, clear brush

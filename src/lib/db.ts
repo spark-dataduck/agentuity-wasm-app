@@ -19,15 +19,15 @@ export function getDatasetNow(): string {
 // Listeners for cache state changes
 type CacheListener = (state: 'none' | 'caching' | 'cached', range: TimeRange | null) => void;
 const cacheListeners = new Set<CacheListener>();
-export function onCacheStateChange(fn: CacheListener) {
+export function onCacheStateChange(fn: CacheListener): () => void {
   cacheListeners.add(fn);
-  return () => cacheListeners.delete(fn);
+  return () => { cacheListeners.delete(fn); };
 }
 function notifyCacheState(state: 'none' | 'caching' | 'cached', range: TimeRange | null) {
   cacheListeners.forEach((fn) => fn(state, range));
 }
 
-const INTERVAL_MAP: Record<TimeRange, string> = {
+const INTERVAL_MAP: Record<string, string> = {
   '15m': '15 MINUTE',
   '1h': '1 HOUR',
   '6h': '6 HOUR',
@@ -71,19 +71,6 @@ export async function initDB(): Promise<void> {
   })();
 
   return initPromise;
-}
-
-const MATERIALIZE_SQL = `
-  SELECT timestamp, service_name, severity, status_code, duration_ms, trace_id
-  FROM demo_tenant.main.otel_events
-  WHERE timestamp >= DATASET_NOW - INTERVAL 'RANGE_INTERVAL'
-  ORDER BY timestamp
-`;
-
-function materializeSQL(interval: string): string {
-  return MATERIALIZE_SQL
-    .replace('DATASET_NOW', getDatasetNow())
-    .replace('RANGE_INTERVAL', interval);
 }
 
 /**
@@ -164,10 +151,10 @@ export function isCacheReady(): boolean {
 let queryReady = false;
 type ReadyListener = (ready: boolean) => void;
 const readyListeners = new Set<ReadyListener>();
-export function onQueryReady(fn: ReadyListener) {
+export function onQueryReady(fn: ReadyListener): () => void {
   readyListeners.add(fn);
   fn(queryReady); // send current state immediately
-  return () => readyListeners.delete(fn);
+  return () => { readyListeners.delete(fn); };
 }
 function setQueryReady(ready: boolean) {
   if (queryReady === ready) return;
@@ -175,7 +162,7 @@ function setQueryReady(ready: boolean) {
   readyListeners.forEach((fn) => fn(ready));
 }
 
-export function getCachedRange(): TimeRange | null {
+export function getCachedRange(): string | null {
   return cachedRange;
 }
 

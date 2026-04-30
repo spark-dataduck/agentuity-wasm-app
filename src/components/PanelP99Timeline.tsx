@@ -83,8 +83,8 @@ export function PanelP99Timeline() {
                 fontSize: 11,
                 fontFamily: 'JetBrains Mono',
               }}
-              labelFormatter={(v: string) => formatTimeTooltip(v, timeRange)}
-              formatter={(value: number, name: string) => [`${Math.round(value).toLocaleString()}ms`, name]}
+              labelFormatter={(v: any) => formatTimeTooltip(String(v), timeRange)}
+              formatter={(value: any, name: any) => [`${Math.round(Number(value)).toLocaleString()}ms`, name]}
             />
             <Legend
               iconSize={8}

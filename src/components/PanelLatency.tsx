@@ -89,12 +89,12 @@ export function PanelLatency() {
                 fontSize: 11,
                 fontFamily: 'JetBrains Mono',
               }}
-              labelFormatter={(v: number) => {
-                const lo = (v - 1) * 250;
-                const hi = v * 250;
+              labelFormatter={(v: any) => {
+                const lo = (Number(v) - 1) * 250;
+                const hi = Number(v) * 250;
                 return `${lo.toLocaleString()}-${hi.toLocaleString()}ms`;
               }}
-              formatter={(value: number, name: string) => [value.toLocaleString(), name]}
+              formatter={(value: any, name: any) => [Number(value).toLocaleString(), name]}
             />
             <Legend
               iconSize={8}
